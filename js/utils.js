@@ -8,6 +8,11 @@
 //When you call this function you give the place where 
 //you want to render your board like so: 
 
+document.querySelector('.board-container').addEventListener('contextmenu', (e) => {
+    e.preventDefault()
+})
+
+
 function renderBoard(board) {
     console.log('board', board)
     var strHTML = '<table><tbody>'
@@ -16,9 +21,9 @@ function renderBoard(board) {
         for (var j = 0; j < board[0].length; j++) {
             const currCell = board[i][j]
             var cellClass = `cell cell-${i}-${j}` + ' '
-            cellClass += (currCell.isMine) ? 'mine' : ''
+            cellClass += (currCell.isShown) ? 'clicked' : ''
 
-            strHTML += `<td class="${cellClass}"  onclick="onCellClicked(this,${i},${j})" >`
+            strHTML += `<td  oncontextmenu="markCell(this,${i},${j})" class="${cellClass}"  onclick="onCellClicked(this,${i},${j})" >`
             strHTML += `<span class ="hidden">`
             if (currCell.isMine) {
                 strHTML += MINE
