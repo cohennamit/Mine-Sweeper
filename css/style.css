@@ -1,0 +1,42 @@
+* {
+    box-sizing: content-box;
+}
+
+body {
+    text-align: center;
+    background-color: rgb(46, 46, 46);
+}
+
+table,
+td {
+    border: 3px solid black;
+}
+
+td {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    transition: 0.5s;
+    padding: 10px;
+}
+
+table {
+    margin: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+.clicked {
+    background-color: grey;
+}
+
+.footer {
+    width: 100%;
+    font-weight: bold;
+    background-color: rgb(80, 80, 80);
+    border-top: 8px solid rgb(30, 30, 30);
+    position: fixed;
+    bottom: 0px;
+}
