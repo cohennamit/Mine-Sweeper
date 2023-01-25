@@ -18,10 +18,17 @@ td {
     text-align: center;
     transition: 0.5s;
     padding: 10px;
+    border-radius: 10%;
+}
+
+td:hover {
+    border-radius: 15%;
+    background-color: rgb(30, 30, 30);
 }
 
 table {
     margin: auto;
+    border-radius: 2%;
 }
 
 .hidden {
@@ -31,6 +38,10 @@ table {
 .clicked {
     background-color: grey;
 }
+.clicked:hover{
+    background-color: rgb(99, 99, 99);
+
+}
 
 .footer {
     width: 100%;
@@ -39,4 +50,23 @@ table {
     border-top: 8px solid rgb(30, 30, 30);
     position: fixed;
     bottom: 0px;
+}
+
+.smiley-btn {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    transition: 0.5s;
+    padding: 10px;
+    font-size: 20px;
+    margin-bottom: 5px;
+    border-radius: 10%;
+    background-color: rgb(30, 30, 30);
+    border: 3px solid rgb(21, 21, 21);
+}
+
+.smiley-btn:hover {
+    border-radius: 15%;
+    background-color: rgb(21, 21, 21);
+
 }
