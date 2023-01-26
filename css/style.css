@@ -106,7 +106,9 @@ table {
 
 }
 
-.lvl-btn {
+.lvl-btn,
+.hint-btn {
+    color: black;
     text-align: center;
     transition: 0.5s;
     font-size: 15px;

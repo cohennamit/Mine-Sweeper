@@ -23,16 +23,20 @@ var gLevel = {
 
 var gGame = {
     isOn: false,
+    isHintActive: false,
     turnCount: 0,
     shownCount: 0,
     markedCount: 0,
     secsPassed: 0,
     livesCount: 3,
+    hintCount: 3,
+
 }
 
 
 function onInit() {
 
+    resetHints()
     gElTimer.innerText = '0000'
     gSecsPassed = 0
     gElSmileyBtn.innerText = NORMAL
@@ -55,7 +59,6 @@ function onInitAfterClick() {
 }
 
 function buildBoard(num) {
-    var minesAmount = 2
     const board = []
     for (var i = 0; i < num; i++) {
         const row = []
@@ -122,10 +125,15 @@ function markCell(elCell, i, j) {
 
 function onCellClicked(elCell, i, j) {
 
+    if (gGame.isHintActive) {
+        hintReveal(i, j)
+        return
+    }
+
     if (gBoard[i][j].isShown || !gGame.isOn || gBoard[i][j].isMarked) return
 
     gGame.turnCount++
-    if (gBoard[i][j].isMine) {
+    if (gBoard[i][j].isMine && !gGame.isHintActive) {
         revealCell(elCell, i, j)
         gGame.livesCount--
         gElLivesSpan.innerText = gGame.livesCount
@@ -149,7 +157,7 @@ function onCellClicked(elCell, i, j) {
 
 function revealCell(elCell, i, j) {
     gBoard[i][j].isShown = true
-    var elCellSpan = elCell.querySelector('.hidden')
+    var elCellSpan = elCell.querySelector('span')
     if (elCellSpan) {
         elCellSpan.classList.remove('hidden')
         elCell.classList.add('clicked')
@@ -172,6 +180,7 @@ function revealNegs(rowIdx, colIdx) {
         }
     }
 }
+
 
 function checkVictory() {
     var isVictory = true
