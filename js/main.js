@@ -1,8 +1,20 @@
 'use strict'
 
 const MINE = '💣'
+const NORMAL = '😃'
+const BLOWN = '🤯'
+const WINNER = '😎'
+
+
+var gElLivesSpan = document.querySelector('.lives')
+var gElSmileyBtn = document.querySelector('.smiley-btn')
+var gElTimer = document.querySelector('.timer')
+
+
 
 var gBoard
+
+var gSecsPassed
 
 var gLevel = {
     size: 8,
@@ -18,25 +30,28 @@ var gGame = {
     livesCount: 3,
 }
 
-var elLivesSpan = document.querySelector('.lives')
-var elSmileyBtn = document.querySelector('.smiley-btn')
 
 function onInit() {
 
-    elSmileyBtn.innerText = '😃'
+    gElTimer.innerText = '0000'
+    gSecsPassed = 0
+    gElSmileyBtn.innerText = NORMAL
     gGame.isOn = true
     gGame.turnCount = 0
     gGame.shownCount = 0
     gGame.markedCount = 0
     gGame.secsPassed = 0
     gGame.livesCount = 3
-    elLivesSpan.innerText = gGame.livesCount
+    gElLivesSpan.innerText = gGame.livesCount
     gBoard = buildBoard(gLevel.size)
-    console.log('Hi');
+    renderBoard(gBoard, '.board-container')
+}
+
+function onInitAfterClick() {
+
     addMines(gBoard)
     setMinesNegsCount(gBoard)
     renderBoard(gBoard, '.board-container')
-
 }
 
 function buildBoard(num) {
@@ -58,8 +73,6 @@ function buildBoard(num) {
 }
 
 function addMines(board) {
-    // board[1][1].isMine = true
-    // board[3][3].isMine = true
     for (var i = 0; i < gLevel.mines; i++) {
         const emptyPos = getEmptyPos()
         if (!emptyPos) return
@@ -78,16 +91,44 @@ function setMinesNegsCount(board) {
 
 }
 
+function markCell(elCell, i, j) {
+
+    if (gBoard[i][j].isShown || !gGame.isOn) return
+
+    if (gGame.markedCount >= gLevel.mines) {
+
+        if (!gBoard[i][j].isMarked) return
+
+        gBoard[i][j].isMarked = false
+        elCell.classList.remove('marked')
+        gGame.markedCount--
+
+    } else {
+
+        if (!gBoard[i][j].isMarked) {
+            gGame.markedCount++
+        } else {
+            gGame.markedCount--
+        }
+        gBoard[i][j].isMarked = !gBoard[i][j].isMarked
+        elCell.classList.toggle('marked')
+    }
+
+    if (checkVictory()) {
+        gameVictory()
+    }
+
+}
+
 function onCellClicked(elCell, i, j) {
 
     if (gBoard[i][j].isShown || !gGame.isOn || gBoard[i][j].isMarked) return
 
     gGame.turnCount++
-    console.log('gGame.turnCount', gGame.turnCount)
     if (gBoard[i][j].isMine) {
         revealCell(elCell, i, j)
         gGame.livesCount--
-        elLivesSpan.innerText = gGame.livesCount
+        gElLivesSpan.innerText = gGame.livesCount
         if (gGame.livesCount === 0) {
             gameOver()
         }
@@ -100,29 +141,36 @@ function onCellClicked(elCell, i, j) {
     if (checkVictory()) {
         gameVictory()
     }
+    if (gGame.turnCount === 1) {
+        gSecsPassed = setInterval(timer, 1000)
+        onInitAfterClick()
+    }
 }
 
-function markCell(elCell, i, j) {
-    if (gBoard[i][j].isShown || !gGame.isOn) return
-    if (gGame.markedCount >= gLevel.mines) {
-        if (!gBoard[i][j].isMarked) return
-        gBoard[i][j].isMarked = false
-        elCell.classList.remove('marked')
-        gGame.markedCount--
-    } else {
+function revealCell(elCell, i, j) {
+    gBoard[i][j].isShown = true
+    var elCellSpan = elCell.querySelector('.hidden')
+    if (elCellSpan) {
+        elCellSpan.classList.remove('hidden')
+        elCell.classList.add('clicked')
+        gGame.shownCount++
+    }
+    else return
+}
 
-        if (!gBoard[i][j].isMarked) {
-            gGame.markedCount++
-        } else {
-            gGame.markedCount--
+function revealNegs(rowIdx, colIdx) {
+
+    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+        if (i < 0 || i >= gBoard.length) continue
+        for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+            if (i === rowIdx && j === colIdx) continue
+            if (j < 0 || j >= gBoard[0].length) continue
+            var currCell = gBoard[i][j]
+            currCell.isShown = true
+            var elCell = document.querySelector(`.cell-${i}-${j}`)
+            revealCell(elCell, i, j)
         }
-        gBoard[i][j].isMarked = !gBoard[i][j].isMarked
-        elCell.classList.toggle('marked')
     }
-    if (checkVictory()) {
-        gameVictory()
-    }
-
 }
 
 function checkVictory() {
@@ -143,53 +191,15 @@ function checkVictory() {
 
 function gameVictory() {
     gGame.isOn = !gGame.isOn
-    elSmileyBtn.innerText = '😎'
-
+    gElSmileyBtn.innerText = WINNER
+    clearInterval(gSecsPassed)
 }
 
 function gameOver() {
     gGame.isOn = !gGame.isOn
-    elSmileyBtn.innerText = '🤯'
+    gElSmileyBtn.innerText = BLOWN
+    clearInterval(gSecsPassed)
     revealBombs()
-}
-
-function revealNegs(rowIdx, colIdx) {
-
-    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
-        if (i < 0 || i >= gBoard.length) continue
-        for (var j = colIdx - 1; j <= colIdx + 1; j++) {
-            if (i === rowIdx && j === colIdx) continue
-            if (j < 0 || j >= gBoard[0].length) continue
-            var currCell = gBoard[i][j]
-            currCell.isShown = true
-            var elCell = document.querySelector(`.cell-${i}-${j}`)
-            revealCell(elCell, i, j)
-        }
-    }
-}
-
-function revealCell(elCell, i, j) {
-    gBoard[i][j].isShown = true
-    var elCellSpan = elCell.querySelector('.hidden')
-    if (elCellSpan) {
-        elCellSpan.classList.remove('hidden')
-        elCell.classList.add('clicked')
-        gGame.shownCount++
-    }
-    else return
-}
-
-function getEmptyPos() {
-    const emptyPoss = []
-    for (var i = 0; i < gBoard.length; i++) {
-        for (var j = 0; j < gBoard[0].length; j++) {
-            if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
-                emptyPoss.push({ i, j })
-            }
-        }
-    }
-    var randIdx = getRandomInt(0, emptyPoss.length)
-    return emptyPoss[randIdx]
 }
 
 function revealBombs() {

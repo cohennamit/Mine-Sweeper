@@ -10,10 +10,21 @@
 </head>
 
 <body onload="onInit()">
-    <h1>Mine Sweeper</h1>
-    <h3><span class="lives"></span> LIVES LEFT 🖤 </h3>
-    <button onclick="onInit()" class="smiley-btn">😃</button>
-    <div class="board-container"></div>
+
+    <div class="game-container">
+
+        <h1>Mine Sweeper</h1>
+        <h3><span class="lives"></span> LIVES LEFT 🖤 </h3>
+        <div class="timer">0000</div>
+        <br>
+        <button onclick="onInit()" class="smiley-btn">😃</button>
+        <br>
+        <button onclick="level1()" class="lvl-btn">BEGINNER</button>
+        <button onclick="level2()" class="lvl-btn">MEDIUM</button>
+        <button onclick="level3()" class="lvl-btn">EXPERT</button>
+        <div class="board-container"></div>
+        <h1 class="bottom">by Amit Cohen</h1>
+
 
     <div class="footer">
         <ul>

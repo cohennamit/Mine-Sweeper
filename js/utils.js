@@ -1,20 +1,19 @@
 'use strict'
-// This is a utility file for frequently used functions
-// for the sprint.
-// ALSO VIEW THE LATEST CR'S!! 
+// This is a utility file for MINE SWEEPER SPRINT
+// ALSO VIEW THE LATEST CRS!! 
 // PACMAN, BALLBOARD, TOUCH NUMS, IN PICTURE AND GAME OF LIFE!
 
-
-//When you call this function you give the place where 
-//you want to render your board like so: 
+//This disables context menu when we rightclick on the game board
+//so we can use our rightclick in order to mark/unmark spots.
 
 document.querySelector('.board-container').addEventListener('contextmenu', (e) => {
     e.preventDefault()
 })
 
 
+//This function renders the matrix we created at buildBoard() into the dom
+//also gives the classes that we will need to select elements and change them.
 function renderBoard(board) {
-    console.log('board', board)
     var strHTML = '<table><tbody>'
     for (var i = 0; i < board.length; i++) {
         strHTML += '<tr>'
@@ -24,7 +23,7 @@ function renderBoard(board) {
             cellClass += (currCell.isShown) ? 'clicked' : ''
 
             strHTML += `<td  oncontextmenu="markCell(this,${i},${j})" class="${cellClass}"  onclick="onCellClicked(this,${i},${j})" >`
-            strHTML += `<span class ="hidden">`
+            strHTML += (!currCell.isShown) ? `<span class ="hidden">` : `<span>`
             if (currCell.isMine) {
                 strHTML += MINE
             } else if (currCell.minesAroundCount > 0) {
@@ -44,18 +43,7 @@ function renderBoard(board) {
     elContainer.innerHTML = strHTML
 }
 
-// location is an object like this - { i: 2, j: 7 }
-function renderCell(location, value) {
-    // Select the elCell and set the value
-    // in this case the elCell is selected by class
-    // to select by id :DQS(`#cell-${location.i}-${location.j}`)
-    // to select by data attrib :DQS(`[data-i = "${i}""]`)
-    const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
-    elCell.innerHTML = value
-}
-
-//if we have a global variable for the board 
-//we don't have to pass it as an argument to the function
+//This function finds how many mines are the neighbors of a given cell.
 function mineNegLoop(board, rowIdx, colIdx) {
     var mineNegCount = 0
     for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
@@ -70,30 +58,65 @@ function mineNegLoop(board, rowIdx, colIdx) {
     return mineNegCount
 }
 
-function createMat(ROWS, COLS) {
-    const mat = []
-    for (var i = 0; i < ROWS; i++) {
-        const row = []
-        for (var j = 0; j < COLS; j++) {
-            row.push('')
+//This function finds all the empty spots in the matrix and returns a random one.
+function getEmptyPos() {
+    const emptyPoss = []
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
+                emptyPoss.push({ i, j })
+            }
         }
-        mat.push(row)
     }
-    return mat
+    var randIdx = getRandomInt(0, emptyPoss.length)
+    return emptyPoss[randIdx]
 }
 
-function printPrimaryDiagonal(squareMat) {
-    for (var d = 0; d < squareMat.length; d++) {
-        var item = squareMat[d][d]
-        console.log('item:', item)
+//This function sets the seconds timer for the game
+//and updates the dom accordingly.
+function timer() {
+    gGame.secsPassed++
+    if (gGame.secsPassed >= 1000) {
+        gElTimer.innerText = gGame.secsPassed
     }
+    else if (gGame.secsPassed >= 100) {
+        gElTimer.innerText = '0' + gGame.secsPassed
+    }
+    else if (gGame.secsPassed >= 10) {
+        gElTimer.innerText = '00' + gGame.secsPassed
+    }
+    else {
+        gElTimer.innerText = '000' + gGame.secsPassed
+    }
+
 }
 
-function printSecondaryDiagonal(squareMat) {
-    for (var d = 0; d < squareMat.length; d++) {
-        var item = squareMat[d][squareMat.length - d - 1]
-        console.log('item:', item)
-    }
+//This function sets gLevel's properties for 'EXPERT' level, clears the seconds timer 
+//and activates onInit() so it uses the new gLevel values.
+function level3() {
+
+    gLevel.size = 12
+    gLevel.mines = 32
+    clearInterval(gSecsPassed)
+    onInit()
+}
+
+//This function sets gLevel's properties for 'MEDIUM' level, clears the seconds timer 
+//and activates onInit() so it uses the new gLevel values.
+function level2() {
+    gLevel.size = 8
+    gLevel.mines = 14
+    clearInterval(gSecsPassed)
+    onInit()
+}
+
+//This function sets gLevel's properties for 'BEGINNER' level, clears the seconds timer 
+//and activates onInit() so it uses the new gLevel values.
+function level1() {
+    gLevel.size = 4
+    gLevel.mines = 2
+    clearInterval(gSecsPassed)
+    onInit()
 }
 
 function getRandomInt(min, max) {
@@ -106,13 +129,4 @@ function getRandomIntInclusive(min, max) {
     min = Math.ceil(min)
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min + 1) + min)
-}
-
-function getRandomColor() {
-    var letters = '0123456789ABCDEF'
-    var color = '#'
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)]
-    }
-    return color
 }

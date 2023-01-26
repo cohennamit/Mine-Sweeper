@@ -2,17 +2,40 @@
     box-sizing: content-box;
 }
 
+h1 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+h3 {
+    display: inline;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.timer {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 3px;
+    display: inline;
+    height: 20px;
+    background-color: rgb(30, 30, 30);
+    border: 3px solid rgb(21, 21, 21);
+    border-radius: 10%;
+}
+
 body {
     text-align: center;
     background-color: rgb(46, 46, 46);
 }
 
 table,
-td {
+.cell {
     border: 3px solid black;
 }
 
-td {
+.cell {
+    font-weight: bold;
     width: 30px;
     height: 30px;
     text-align: center;
@@ -21,13 +44,14 @@ td {
     border-radius: 10%;
 }
 
-td:hover {
+.cell:hover {
     border-radius: 15%;
     background-color: rgb(30, 30, 30);
 }
 
 table {
     margin: auto;
+    margin-bottom: 70px;
     border-radius: 2%;
 }
 
@@ -38,22 +62,27 @@ table {
 .clicked {
     background-color: grey;
 }
-.marked{
+
+.marked {
     background-color: rgb(120, 6, 6);
 }
-.marked:hover{
+
+.marked:hover {
     background-color: rgb(90, 4, 4);
 }
-.clicked:hover{
+
+.clicked:hover {
     background-color: rgb(99, 99, 99);
 
 }
 
 .footer {
     width: 100%;
+    height: 50px;
     font-weight: bold;
     background-color: rgb(80, 80, 80);
-    border-top: 8px solid rgb(30, 30, 30);
+    border-top: 4px solid rgb(30, 30, 30);
+    padding: 5px;
     position: fixed;
     bottom: 0px;
 }
@@ -75,4 +104,24 @@ table {
     border-radius: 15%;
     background-color: rgb(21, 21, 21);
 
+}
+
+.lvl-btn {
+    text-align: center;
+    transition: 0.5s;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 10%;
+    background-color: rgb(30, 30, 30);
+    border: 3px solid rgb(21, 21, 21);
+}
+
+.lvl-btn:hover {
+    border-radius: 15%;
+    background-color: rgb(21, 21, 21);
+}
+
+.bottom {
+    color: rgb(46, 46, 46);
 }
