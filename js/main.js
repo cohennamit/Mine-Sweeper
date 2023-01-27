@@ -9,7 +9,10 @@ const WINNER = '😎'
 var gElLivesSpan = document.querySelector('.lives')
 var gElSmileyBtn = document.querySelector('.smiley-btn')
 var gElTimer = document.querySelector('.timer')
-
+var gElSafeBtnSpan = document.querySelector('.safe-btn span')
+var gElMegaBtnSpan = document.querySelector('.mega-btn span')
+var gElMegaHintCell1
+var gElMegaHintCell2
 
 
 var gBoard
@@ -24,28 +27,40 @@ var gLevel = {
 var gGame = {
     isOn: false,
     isHintActive: false,
+    isMegaHintActive: false,
+    megaHintStage: 1,
     turnCount: 0,
     shownCount: 0,
     markedCount: 0,
     secsPassed: 0,
     livesCount: 3,
     hintCount: 3,
+    megaHintCount: 1,
+    safeClickCount: 3,
 
 }
 
 
 function onInit() {
 
-    resetHints()
-    gElTimer.innerText = '0000'
+    clearInterval(gSecsPassed)
     gSecsPassed = 0
+    gElTimer.innerText = '0000'
+    resetHints()
     gElSmileyBtn.innerText = NORMAL
     gGame.isOn = true
+    gGame.isHintActive = false
+    gGame.isMegaHintActive = false
     gGame.turnCount = 0
     gGame.shownCount = 0
     gGame.markedCount = 0
     gGame.secsPassed = 0
     gGame.livesCount = 3
+    gGame.safeClickCount = 3
+    gGame.megaHintCount = 1
+    gGame.megaHintStage = 1
+    gElMegaBtnSpan.innerText = gGame.megaHintCount
+    gElSafeBtnSpan.innerText = gGame.safeClickCount
     gElLivesSpan.innerText = gGame.livesCount
     gBoard = buildBoard(gLevel.size)
     renderBoard(gBoard, '.board-container')
@@ -125,6 +140,31 @@ function markCell(elCell, i, j) {
 
 function onCellClicked(elCell, i, j) {
 
+    if (gGame.isMegaHintActive && gGame.megaHintStage === 1) {
+        gElMegaHintCell1 = { i, j }
+        gGame.megaHintStage++
+        elCell.classList.add('mega-hinted')
+        setTimeout(() => {
+            elCell.classList.remove('mega-hinted')
+        }, 1000)
+        return
+    }
+
+    if (gGame.isMegaHintActive && gGame.megaHintStage === 2) {
+        gElMegaHintCell2 = { i, j }
+        elCell.classList.add('mega-hinted')
+        setTimeout(() => {
+            elCell.classList.remove('mega-hinted')
+        }, 1000)
+        gGame.megaHintStage++
+        gGame.isMegaHintActive = false
+        gGame.megaHintCount--
+        gElMegaBtnSpan.innerText = gGame.megaHintCount
+        performMegaHint()
+        return
+    }
+
+
     if (gGame.isHintActive) {
         hintReveal(i, j)
         return
@@ -180,7 +220,6 @@ function revealNegs(rowIdx, colIdx) {
         }
     }
 }
-
 
 function checkVictory() {
     var isVictory = true

@@ -68,3 +68,57 @@ function hintHideCell(elCell, i, j) {
     }
     else return
 }
+
+//This function checks if the user has enough safe clicks and if the game's on,
+// if so it gets a safe position from getSafePos() marks it as safe and then timeouts 
+// to unmark it and reduce the amount of safe click counts the user has after the activation.
+function safeClick() {
+    if (gGame.safeClickCount <= 0 || !gGame.isOn) return
+    const safePos = getSafePos()
+    if (!safePos) return
+    var ClassSelector = `.cell-${safePos.i}-${safePos.j}`
+    var elCell = document.querySelector(ClassSelector)
+    elCell.classList.add('safe-marked')
+    setTimeout(() => {
+        elCell.classList.remove('safe-marked')
+    }, 1000)
+    gGame.safeClickCount--
+    gElSafeBtnSpan.innerText = gGame.safeClickCount
+}
+
+//This function finds all the safe spots (spots that aren't a mines and that aren't shown)
+//and returns a random one.
+function getSafePos() {
+    const safePoss = []
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) {
+                safePoss.push({ i, j })
+            }
+        }
+    }
+    var randIdx = getRandomInt(0, safePoss.length)
+    return safePoss[randIdx]
+}
+
+//This function sets the mega hint value to be active
+//and work on the next two clicks.
+function activateMegaHint() {
+    gGame.isMegaHintActive = true
+}
+
+//This function takes the two objects created in onCellClicked() while
+//mega hint is active and loops through their values and performs hintRevealCell()
+//and then timeouts hintHideCell() on each one of them, in that way creates a mega hint.
+function performMegaHint() {
+    for (var i = gElMegaHintCell1.i; i <= gElMegaHintCell2.i; i++) {
+        for (var j = gElMegaHintCell1.j; j <= gElMegaHintCell2.j; j++) {
+            var ClassSelector = `.cell-${i}-${j}`
+            var elCell = document.querySelector(ClassSelector)
+            hintRevealCell(elCell, i, j)
+            setTimeout(hintHideCell, 1000, elCell, i, j)
+
+        }
+    }
+}
+
