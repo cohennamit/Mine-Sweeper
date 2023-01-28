@@ -48,7 +48,7 @@ var gGame = {
 
 
 function onInit() {
-
+    gBestTime = Infinity
     clearInterval(gSecsPassed)
     gSecsPassed = 0
     gElTimer.innerText = '0000'
