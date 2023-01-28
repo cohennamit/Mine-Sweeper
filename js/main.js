@@ -24,6 +24,9 @@ var gSecsPassed
 var gUserName
 
 var gBestTime = Infinity
+var gBestTime1 = Infinity
+var gBestTime2 = Infinity
+var gBestTime3 = Infinity
 
 var gLevel = {
     size: 8,
@@ -48,7 +51,6 @@ var gGame = {
 
 
 function onInit() {
-    gBestTime = Infinity
     clearInterval(gSecsPassed)
     gSecsPassed = 0
     gElTimer.innerText = '0000'
@@ -253,16 +255,39 @@ function gameVictory() {
     gElSmileyBtn.innerText = WINNER
     clearInterval(gSecsPassed)
     localStorage.setItem('Time', gGame.secsPassed)
-    if (gBestTime > gGame.secsPassed) {
-        gBestTime = gGame.secsPassed
-        localStorage.setItem('Best', gBestTime)
-        var bestScoreStr = `BEST SCORE : ${gBestTime}(s), by ${gUserName}.`
-        gElBestScore.innerText = bestScoreStr
-        if (gLevel.size === 4) localStorage.setItem('lvl1Best', bestScoreStr)
-        else if (gLevel.size === 8) localStorage.setItem('lvl2Best', bestScoreStr)
-        else if (gLevel.size === 12) localStorage.setItem('lvl3Best', bestScoreStr)
-
+    if (gLevel.size === 4) {
+        if (gBestTime1 > gGame.secsPassed) {
+            gBestTime1 = gGame.secsPassed
+            var bestScoreStr = `BEST SCORE : ${gBestTime1}(s), by ${gUserName}.`
+            localStorage.setItem('lvl1Best', bestScoreStr)
+            gElBestScore.innerText = bestScoreStr
+        }
     }
+    if (gLevel.size === 8) {
+        if (gBestTime2 > gGame.secsPassed) {
+            gBestTime2 = gGame.secsPassed
+            var bestScoreStr = `BEST SCORE : ${gBestTime2}(s), by ${gUserName}.`
+            localStorage.setItem('lvl2Best', bestScoreStr)
+            gElBestScore.innerText = bestScoreStr
+        }
+    }
+    if (gLevel.size === 12) {
+        if (gBestTime3 > gGame.secsPassed) {
+            gBestTime3 = gGame.secsPassed
+            var bestScoreStr = `BEST SCORE : ${gBestTime3}(s), by ${gUserName}.`
+            localStorage.setItem('lvl3Best', bestScoreStr)
+            gElBestScore.innerText = bestScoreStr
+        }
+    }
+    //     if (gBestTime > gGame.secsPassed) {
+    //         gBestTime = gGame.secsPassed
+    //         localStorage.setItem('Best', gBestTime)
+    //         gElBestScore.innerText = bestScoreStr
+    //         if (gLevel.size === 4) localStorage.setItem('lvl1Best', bestScoreStr)
+    //         else if (gLevel.size === 8) localStorage.setItem('lvl2Best', bestScoreStr)
+    //         else if (gLevel.size === 12) localStorage.setItem('lvl3Best', bestScoreStr)
+
+    //     }
 }
 
 function gameOver() {
