@@ -136,6 +136,29 @@ function level1() {
     onInit()
 }
 
+//This function resets the game and all it's components and variables
+function resetGame() {
+    clearInterval(gSecsPassed)
+    gSecsPassed = 0
+    gElTimer.innerText = '0000'
+    resetHints()
+    gElSmileyBtn.innerText = NORMAL
+    gGame.isOn = true
+    gGame.isHintActive = false
+    gGame.isMegaHintActive = false
+    gGame.turnCount = 0
+    gGame.shownCount = 0
+    gGame.markedCount = 0
+    gGame.secsPassed = 0
+    gGame.livesCount = 3
+    gGame.safeClickCount = 3
+    gGame.megaHintCount = 1
+    gGame.megaHintStage = 1
+    gElMegaBtnSpan.innerText = gGame.megaHintCount
+    gElSafeBtnSpan.innerText = gGame.safeClickCount
+    gElLivesSpan.innerText = gGame.livesCount
+}
+
 function getRandomInt(min, max) {
     min = Math.ceil(min)
     max = Math.floor(max)

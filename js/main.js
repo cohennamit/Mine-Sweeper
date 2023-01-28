@@ -28,6 +28,7 @@ var gBestTime1 = Infinity
 var gBestTime2 = Infinity
 var gBestTime3 = Infinity
 
+
 var gLevel = {
     size: 8,
     mines: 14,
@@ -51,25 +52,8 @@ var gGame = {
 
 
 function onInit() {
-    clearInterval(gSecsPassed)
-    gSecsPassed = 0
-    gElTimer.innerText = '0000'
-    resetHints()
-    gElSmileyBtn.innerText = NORMAL
-    gGame.isOn = true
-    gGame.isHintActive = false
-    gGame.isMegaHintActive = false
-    gGame.turnCount = 0
-    gGame.shownCount = 0
-    gGame.markedCount = 0
-    gGame.secsPassed = 0
-    gGame.livesCount = 3
-    gGame.safeClickCount = 3
-    gGame.megaHintCount = 1
-    gGame.megaHintStage = 1
-    gElMegaBtnSpan.innerText = gGame.megaHintCount
-    gElSafeBtnSpan.innerText = gGame.safeClickCount
-    gElLivesSpan.innerText = gGame.livesCount
+
+    resetGame()
     gBoard = buildBoard(gLevel.size)
     renderBoard(gBoard, '.board-container')
 }
@@ -82,9 +66,12 @@ function onInitAfterClick() {
 }
 
 function buildBoard(num) {
+
     const board = []
+
     for (var i = 0; i < num; i++) {
         const row = []
+
         for (var j = 0; j < num; j++) {
             row[j] = {
                 minesAroundCount: 0,
@@ -99,22 +86,23 @@ function buildBoard(num) {
 }
 
 function addMines(board) {
+
     for (var i = 0; i < gLevel.mines; i++) {
         const emptyPos = getEmptyPos()
         if (!emptyPos) return
         gBoard[emptyPos.i][emptyPos.j].isMine = true
     }
-
 }
 
 function setMinesNegsCount(board) {
+
     for (var i = 0; i < board.length; i++) {
+
         for (var j = 0; j < board[i].length; j++) {
             var currCell = board[i][j]
             currCell.minesAroundCount = mineNegLoop(board, i, j)
         }
     }
-
 }
 
 function markCell(elCell, i, j) {
@@ -143,7 +131,6 @@ function markCell(elCell, i, j) {
     if (checkVictory()) {
         gameVictory()
     }
-
 }
 
 function onCellClicked(elCell, i, j) {
@@ -171,7 +158,6 @@ function onCellClicked(elCell, i, j) {
         performMegaHint()
         return
     }
-
 
     if (gGame.isHintActive) {
         hintReveal(i, j)
@@ -204,8 +190,10 @@ function onCellClicked(elCell, i, j) {
 }
 
 function revealCell(elCell, i, j) {
+
     gBoard[i][j].isShown = true
     var elCellSpan = elCell.querySelector('span')
+
     if (elCellSpan) {
         elCellSpan.classList.remove('hidden')
         elCell.classList.add('clicked')
@@ -218,8 +206,10 @@ function revealNegs(rowIdx, colIdx) {
 
     for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
         if (i < 0 || i >= gBoard.length) continue
+
         for (var j = colIdx - 1; j <= colIdx + 1; j++) {
             if (i === rowIdx && j === colIdx) continue
+
             if (j < 0 || j >= gBoard[0].length) continue
             var currCell = gBoard[i][j]
             currCell.isShown = true
@@ -235,8 +225,10 @@ function revealNegs(rowIdx, colIdx) {
 }
 
 function checkVictory() {
+
     var isVictory = true
     for (var i = 0; i < gBoard.length; i++) {
+
         for (var j = 0; j < gBoard[i].length; j++) {
             var currCell = gBoard[i][j]
             if (!currCell.isShown && !currCell.isMarked) {
@@ -251,6 +243,7 @@ function checkVictory() {
 }
 
 function gameVictory() {
+
     gGame.isOn = !gGame.isOn
     gElSmileyBtn.innerText = WINNER
     clearInterval(gSecsPassed)
@@ -282,6 +275,7 @@ function gameVictory() {
 }
 
 function gameOver() {
+
     gGame.isOn = !gGame.isOn
     gElSmileyBtn.innerText = BLOWN
     clearInterval(gSecsPassed)
@@ -289,6 +283,7 @@ function gameOver() {
 }
 
 function revealBombs() {
+
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard[i].length; j++) {
             var currCell = gBoard[i][j]
