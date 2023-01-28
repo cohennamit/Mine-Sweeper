@@ -122,3 +122,12 @@ function performMegaHint() {
     }
 }
 
+//This function asks the user for his username and sets it in local storage and
+//in the username box in game.
+function changeUsername() {
+    gUserName = prompt('What is your username?')
+    localStorage.setItem('Username', gUserName)
+    gElUsername.innerText = gUserName
+    onInit()
+}
+

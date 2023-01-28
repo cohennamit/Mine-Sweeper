@@ -20,7 +20,8 @@ function renderBoard(board) {
         for (var j = 0; j < board[0].length; j++) {
             const currCell = board[i][j]
             var cellClass = `cell cell-${i}-${j}` + ' '
-            cellClass += (currCell.isShown) ? 'clicked' : ''
+            cellClass += (currCell.isShown) ? 'clicked ' : ''
+            cellClass += (currCell.isMarked) ? ' marked' : ''
 
             strHTML += `<td  oncontextmenu="markCell(this,${i},${j})" class="${cellClass}"  onclick="onCellClicked(this,${i},${j})" >`
             strHTML += (!currCell.isShown) ? `<span class ="hidden">` : `<span>`
@@ -92,30 +93,46 @@ function timer() {
 }
 
 //This function sets gLevel's properties for 'EXPERT' level, clears the seconds timer 
-//and activates onInit() so it uses the new gLevel values.
+//activates onInit() so it uses the new gLevel values, and sets the best score for each
+//level, if there is no best score yet it acts appropriately.
 function level3() {
 
     gLevel.size = 12
     gLevel.mines = 32
     clearInterval(gSecsPassed)
+    // gBestTime = Infinity
+    gElBestScore.innerText = localStorage.getItem('lvl3Best')
+    if (!localStorage.getItem('lvl3Best')) {
+        gElBestScore.innerText = 'BEST SCORE'
+    }
     onInit()
 }
 
 //This function sets gLevel's properties for 'MEDIUM' level, clears the seconds timer 
-//and activates onInit() so it uses the new gLevel values.
+//activates onInit() so it uses the new gLevel values.
 function level2() {
     gLevel.size = 8
     gLevel.mines = 14
     clearInterval(gSecsPassed)
+    // gBestTime = Infinity
+    gElBestScore.innerText = localStorage.getItem('lvl2Best')
+    if (!localStorage.getItem('lvl2Best')) {
+        gElBestScore.innerText = 'BEST SCORE'
+    }
     onInit()
 }
 
 //This function sets gLevel's properties for 'BEGINNER' level, clears the seconds timer 
-//and activates onInit() so it uses the new gLevel values.
+//activates onInit() so it uses the new gLevel values.
 function level1() {
     gLevel.size = 4
     gLevel.mines = 2
     clearInterval(gSecsPassed)
+    // gBestTime = Infinity
+    gElBestScore.innerText = localStorage.getItem('lvl1Best')
+    if (!localStorage.getItem('lvl1Best')) {
+        gElBestScore.innerText = 'BEST SCORE'
+    }
     onInit()
 }
 

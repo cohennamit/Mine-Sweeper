@@ -51,9 +51,27 @@ table,
 
 table {
     margin: auto;
-    margin-bottom: 70px;
+    margin-bottom: 5px;
     border-radius: 2%;
+    margin-bottom: 200px;
 }
+
+.best-score {
+    margin: auto;
+    margin-bottom: 70px;
+    width: 500px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    transition: 0.5s;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 10%;
+    background-color: rgb(30, 30, 30);
+    border: 3px solid rgb(21, 21, 21);
+}
+
 
 .hidden {
     display: none;
@@ -160,6 +178,29 @@ table {
     background-color: rgb(21, 21, 21);
 
 }
+
+.user-btn {
+    font-weight: bold;
+    width: 220px;
+    text-align: left;
+    transition: 0.5s;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 10%;
+    background-color: rgb(30, 30, 30);
+    border: 3px solid rgb(21, 21, 21);
+}
+
+.user-btn:hover {
+    border-radius: 15%;
+    background-color: rgb(21, 21, 21);
+}
+
+.username {
+    text-align: center;
+}
+
 
 .lvl-btn,
 .hint-btn {

@@ -11,6 +11,8 @@ var gElSmileyBtn = document.querySelector('.smiley-btn')
 var gElTimer = document.querySelector('.timer')
 var gElSafeBtnSpan = document.querySelector('.safe-btn span')
 var gElMegaBtnSpan = document.querySelector('.mega-btn span')
+var gElUsername = document.querySelector('.user-btn span')
+var gElBestScore = document.querySelector('.best-score')
 var gElMegaHintCell1
 var gElMegaHintCell2
 
@@ -18,6 +20,10 @@ var gElMegaHintCell2
 var gBoard
 
 var gSecsPassed
+
+var gUserName
+
+var gBestTime = Infinity
 
 var gLevel = {
     size: 8,
@@ -118,7 +124,7 @@ function markCell(elCell, i, j) {
         if (!gBoard[i][j].isMarked) return
 
         gBoard[i][j].isMarked = false
-        elCell.classList.remove('marked')
+        elCell.classList.toggle('marked')
         gGame.markedCount--
 
     } else {
@@ -216,6 +222,11 @@ function revealNegs(rowIdx, colIdx) {
             var currCell = gBoard[i][j]
             currCell.isShown = true
             var elCell = document.querySelector(`.cell-${i}-${j}`)
+            if (currCell.isMarked) {
+                currCell.isMarked = false
+                gGame.markedCount--
+                elCell.classList.remove('marked')
+            }
             revealCell(elCell, i, j)
         }
     }
@@ -241,6 +252,17 @@ function gameVictory() {
     gGame.isOn = !gGame.isOn
     gElSmileyBtn.innerText = WINNER
     clearInterval(gSecsPassed)
+    localStorage.setItem('Time', gGame.secsPassed)
+    if (gBestTime > gGame.secsPassed) {
+        gBestTime = gGame.secsPassed
+        localStorage.setItem('Best', gBestTime)
+        var bestScoreStr = `BEST SCORE : ${gBestTime}(s), by ${gUserName}.`
+        gElBestScore.innerText = bestScoreStr
+        if (gLevel.size === 4) localStorage.setItem('lvl1Best', bestScoreStr)
+        else if (gLevel.size === 8) localStorage.setItem('lvl2Best', bestScoreStr)
+        else if (gLevel.size === 12) localStorage.setItem('lvl3Best', bestScoreStr)
+
+    }
 }
 
 function gameOver() {
