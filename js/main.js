@@ -279,15 +279,6 @@ function gameVictory() {
             gElBestScore.innerText = bestScoreStr
         }
     }
-    //     if (gBestTime > gGame.secsPassed) {
-    //         gBestTime = gGame.secsPassed
-    //         localStorage.setItem('Best', gBestTime)
-    //         gElBestScore.innerText = bestScoreStr
-    //         if (gLevel.size === 4) localStorage.setItem('lvl1Best', bestScoreStr)
-    //         else if (gLevel.size === 8) localStorage.setItem('lvl2Best', bestScoreStr)
-    //         else if (gLevel.size === 12) localStorage.setItem('lvl3Best', bestScoreStr)
-
-    //     }
 }
 
 function gameOver() {
