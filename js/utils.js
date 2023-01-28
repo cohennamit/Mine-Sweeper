@@ -100,7 +100,7 @@ function level3() {
     gLevel.size = 12
     gLevel.mines = 32
     clearInterval(gSecsPassed)
-    // gBestTime = Infinity
+    gBestTime = Infinity
     gElBestScore.innerText = localStorage.getItem('lvl3Best')
     if (!localStorage.getItem('lvl3Best')) {
         gElBestScore.innerText = 'BEST SCORE'
@@ -114,7 +114,7 @@ function level2() {
     gLevel.size = 8
     gLevel.mines = 14
     clearInterval(gSecsPassed)
-    // gBestTime = Infinity
+    gBestTime = Infinity
     gElBestScore.innerText = localStorage.getItem('lvl2Best')
     if (!localStorage.getItem('lvl2Best')) {
         gElBestScore.innerText = 'BEST SCORE'
@@ -128,7 +128,7 @@ function level1() {
     gLevel.size = 4
     gLevel.mines = 2
     clearInterval(gSecsPassed)
-    // gBestTime = Infinity
+    gBestTime = Infinity
     gElBestScore.innerText = localStorage.getItem('lvl1Best')
     if (!localStorage.getItem('lvl1Best')) {
         gElBestScore.innerText = 'BEST SCORE'
